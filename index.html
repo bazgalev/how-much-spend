@@ -1,11 +1,3 @@
-<?php
-
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-
-?>
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -53,12 +45,11 @@ ini_set('display_startup_errors', 1);
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script src="functions.js"></script>
+<script src="js/functions.js"></script>
 <script>
     $(function () {
+        $("#resultMsg").hide();
         $("#getSum").click(function () {
-
-            $(".result").removeAttr('hidden');
 
             var subway = $("#subwayInput").val();
             var ground = $("#groundInput").val();
@@ -78,6 +69,8 @@ ini_set('display_startup_errors', 1);
             }
 
             if (!hasValidationErrors) {
+                $("#resultMsg").show();
+                hasValidationErrors=false;
                 var subwaySum = getSubwaySum(subway);
                 var groundSum = getGroundSum(ground);
 
@@ -86,6 +79,8 @@ ini_set('display_startup_errors', 1);
                 console.log('Subway sum: ' + subwaySum);
                 console.log('Ground sum: ' + groundSum);
                 console.log("Sum: " + (subwaySum + groundSum));
+            }else{
+                $("#resultMsg").hide();
             }
         });
     });
