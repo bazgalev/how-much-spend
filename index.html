@@ -48,7 +48,7 @@
 <script src="js/functions.js"></script>
 <script>
     $(function () {
-        $("#resultMsg").hide();
+        $(".result").hide();
         $("#getSum").click(function () {
 
             var subway = $("#subwayInput").val();
@@ -80,7 +80,7 @@
                 console.log('Ground sum: ' + groundSum);
                 console.log("Sum: " + (subwaySum + groundSum));
             }else{
-                $("#resultMsg").hide();
+                $(".result").hide();
             }
         });
     });
