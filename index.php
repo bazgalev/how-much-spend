@@ -27,38 +27,66 @@ ini_set('display_startup_errors', 1);
             </p>
         </div>
     </div>
+    <p class="result">
+    <h5>Результат</h5>
+    <p id="resultMsg">
+
+    </p>
+    </p>
 
     <form>
         <div class="form-group col-lg-3 col-md-12 p-0">
             <label for="subwayInput">Число поездок на метро:</label>
             <input id="subwayInput" type="number" class="form-control" value="0" min="0" required>
+            <small id="subwayInput" class="text-danger"></small>
         </div>
         <div class="form-group col-lg-3 col-md-12 p-0">
             <label for="groundInput">Число поездок на НГПТ:</label>
             <input id="groundInput" type="number" class="form-control" value="0" min="0" required>
-            <small class="form-text text-muted">* Наземный городской пассажирский транспорт</small>
+            <small id="groundInput" class="text-danger"></small>
+            <small class="form-text text-muted">* Наземный городской пассажирский транспорт (не частный)</small>
+
         </div>
-        <button id="getSum" type="button" class="btn btn-primary">Посчитать</button>
+        <button id="getSum" type="button" class="btn btn-success">Посчитать</button>
     </form>
 </div>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="functions.js"></script>
 <script>
-    $.(function () {
+    $(function () {
         $("#getSum").click(function () {
+
+            $(".result").removeAttr('hidden');
+
             var subway = $("#subwayInput").val();
             var ground = $("#groundInput").val();
 
-            $.ajax({
-                method: "POST",
-                url: "ajaxHandler.php",
-                data: {subway: subway, ground: ground},
-            })
-                .done(function (response) {
-                    $("form").html(response);
+            var hasValidationErrors = false;
+            if (subway < 0 || subway == '') {
+                $("small#subwayInput").text("Укажите корректные данные о количестве поездок на метро");
+                hasValidationErrors = true;
+            }else{
+                $("small#subwayInput").text("");
+            }
+            if (ground < 0 || ground == '') {
+                $("small#groundInput").text("Укажите корректные данные о количестве поездок на наземно транспорте");
+                hasValidationErrors = true;
+            }else{
+                $("small#groundInput").text("");
+            }
 
-                });
+            if (!hasValidationErrors) {
+                var subwaySum = getSubwaySum(subway);
+                var groundSum = getGroundSum(ground);
+
+                var result = getResult(subwaySum, groundSum);
+                $("#resultMsg").html(result);
+                console.log('Subway sum: ' + subwaySum);
+                console.log('Ground sum: ' + groundSum);
+                console.log("Sum: " + (subwaySum + groundSum));
+            }
         });
     });
 
